@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EduSpeed Browser</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151e32;--panel2:#202c44;--text:#f4f7ff;--muted:#aab7cf;--blue:#62b8ff;--line:#30415f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#182a49 0,#0b1020 55%);font:16px system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);min-height:100vh}
+main{max-width:900px;margin:auto;padding:28px 18px 60px}.top{display:flex;align-items:center;gap:12px;margin-bottom:24px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#68d5ff,#5378ff);display:grid;place-items:center;color:#061126;font-weight:900;font-size:24px}.brand{font-size:25px;font-weight:800;letter-spacing:-.5px}.sub{color:var(--muted);font-size:13px}
+.card{background:rgba(21,30,50,.94);border:1px solid var(--line);border-radius:20px;padding:22px;margin:16px 0;box-shadow:0 12px 35px #0003}
+h2{font-size:18px;margin:0 0 7px}p{color:var(--muted);line-height:1.5;margin:6px 0 15px}
+label{display:block;color:var(--muted);font-size:13px;margin:12px 0 7px}input{width:100%;background:#0d1628;color:var(--text);border:1px solid #405273;border-radius:12px;padding:13px;font-size:15px}
+button,.btn{border:0;border-radius:12px;padding:12px 16px;background:var(--blue);color:#061326;font-weight:750;font-size:15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+button.secondary,.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+button:hover,.btn:hover{filter:brightness(1.08)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.speedgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:17px 0}.speed{background:#202c44;color:#f4f7ff;border:1px solid #405273;padding:16px 8px;border-radius:14px;font-size:19px}.speed.active{background:#d7efff;color:#09213c;border-color:#d7efff}
+.custom{display:flex;gap:10px;align-items:center}.custom input{max-width:150px}
+.note{border-left:3px solid #e7b65d;padding:10px 13px;background:#332b1b;border-radius:8px;color:#f6dfb3;font-size:13px;line-height:1.5}
+.steps{counter-reset:step;list-style:none;padding:0;margin:12px 0}.steps li{counter-increment:step;display:flex;gap:12px;margin:13px 0;color:var(--muted);line-height:1.5}.steps li:before{content:counter(step);flex:0 0 27px;height:27px;border-radius:50%;background:#263b5a;color:#9dd8ff;display:grid;place-items:center;font-weight:800}
+footer{text-align:center;color:#7f90ad;font-size:12px;margin-top:24px}
+@media(max-width:520px){main{padding:20px 13px}.card{padding:17px}.speedgrid{grid-template-columns:repeat(2,1fr)}.custom{align-items:stretch;flex-wrap:wrap}.custom input{max-width:none;flex:1}}
+</style>
+</head>
+<body>
+<main>
+  <header class="top"><div class="logo">E</div><div><div class="brand">EduSpeed Browser</div><div class="sub">A personal study launchpad for your Chromebook</div></div></header>
+
+  <section class="card">
+    <h2>Open your learning site</h2>
+    <p>Launch Edgenuity in a separate tab. Sign in on the official Edgenuity website.</p>
+    <label for="site">Website address</label>
+    <input id="site" value="https://student.edgenuity.com/" autocomplete="url" spellcheck="false">
+    <div class="actions">
+      <button id="open">↗ Open website</button>
+      <button class="secondary" id="reset">Reset address</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Video speed helper</h2>
+    <p>Choose the speed you want to try. This page cannot directly change a video playing in another tab; the bookmarklet below may work on ordinary HTML5 video players.</p>
+    <div class="speedgrid" id="speeds">
+      <button class="speed" data-speed="1.5">1.5×</button>
+      <button class="speed active" data-speed="2">2×</button>
+      <button class="speed" data-speed="2.5">2.5×</button>
+      <button class="speed" data-speed="3">3×</button>
+      <button class="speed" data-speed="4">4×</button>
+      <button class="speed" data-speed="5">5×</button>
+      <button class="speed" data-speed="6">6×</button>
+      <button class="speed" data-speed="8">8×</button>
+    </div>
+    <label for="customSpeed">Or enter a custom speed (0.25–16×)</label>
+    <div class="custom"><input id="customSpeed" type="number" min=".25" max="16" step=".25" value="2"><button id="customApply">Use custom speed</button></div>
+    <div class="actions"><button id="copy">Copy video-speed bookmarklet</button></div>
+    <p id="status" aria-live="polite">Selected speed: 2×</p>
+    <div class="note">The bookmarklet only works if the browser allows it and the player uses a compatible video element. Edgenuity may block it or use a player it cannot control. It does not unlock lessons, skip required work, or change course progress.</div>
+  </section>
+
+  <section class="card">
+    <h2>Set up the speed bookmark on Chrome</h2>
+    <ol class="steps">
+      <li>Choose a speed above, then press <b>Copy video-speed bookmarklet</b>.</li>
+      <li>In Chrome, show the bookmarks bar with <b>Ctrl + Shift + B</b>.</li>
+      <li>Right-click the bookmarks bar and choose <b>Add page</b> (or Bookmark manager → Add new bookmark).</li>
+      <li>Name it <b>Set video speed</b>. Paste the copied text into the URL field and save.</li>
+      <li>Open your lesson video. If allowed, click the bookmark to try setting the video speed.</li>
+    </ol>
+    <div class="note">If your school manages Chrome and blocks bookmarklets or bookmark editing, don't try to bypass its controls. Ask your teacher or school IT whether an approved playback-speed option is available.</div>
+  </section>
+
+  <footer>EduSpeed Browser is an independent helper page, not affiliated with or endorsed by Edgenuity. It does not store your login or password.</footer>
+</main>
+<script>
+const site=document.getElementById('site'),status=document.getElementById('status'),custom=document.getElementById('customSpeed');
+let speed=2;
+function setSpeed(n){speed=n;document.querySelectorAll('.speed').forEach(b=>b.classList.toggle('active',Number(b.dataset.speed)===n));custom.value=n;status.textContent='Selected speed: '+n+'×';}
+document.querySelectorAll('.speed').forEach(b=>b.addEventListener('click',()=>setSpeed(Number(b.dataset.speed))));
+document.getElementById('customApply').addEventListener('click',()=>{const n=Number(custom.value);if(!Number.isFinite(n)||n<.25||n>16){status.textContent='Enter a speed between 0.25 and 16.';return;}setSpeed(n);});
+document.getElementById('open').addEventListener('click',()=>{let u=site.value.trim();if(!/^https?:\/\//i.test(u))u='https://'+u;try{const parsed=new URL(u);if(!['http:','https:'].includes(parsed.protocol))throw 0;window.open(parsed.href,'_blank','noopener');}catch(e){status.textContent='Please enter a valid website address.';}});
+document.getElementById('reset').addEventListener('click',()=>site.value='https://student.edgenuity.com/');
+document.getElementById('copy').addEventListener('click',async()=>{const code="javascript:(()=>{const vs=[...document.querySelectorAll('video')];if(!vs.length){alert('No compatible video found on this page.');return;}vs.forEach(v=>{v.playbackRate="+speed+";v.defaultPlaybackRate="+speed+";});alert('Tried to set '+"+JSON.stringify(speed)+"+'x on '+vs.length+' video(s).');})();";try{await navigator.clipboard.writeText(code);status.textContent='Copied bookmarklet for '+speed+'×. Add it as a Chrome bookmark using the steps below.';}catch(e){status.textContent='Clipboard access was blocked. Try opening this page in Chrome and copying again.';}});
+</script>
+</body>
+</html>
